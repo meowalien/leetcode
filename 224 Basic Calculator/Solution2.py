@@ -34,40 +34,28 @@ class Solution:
     Every number and running calculation will fit in a signed 32-bit integer.
     """
 
-    def calculate(self, s: str) -> int:
-        stack = []
-        result = 0
-        num = 0
-        sign = 1
-        for c in s:
-            if c.isdigit():
-                num = num * 10 + int(c)
-            elif c == '+':
-                result += sign * num
-                num = 0
-                sign = 1
-            elif c == '-':
-                result += sign * num
-                num = 0
-                sign = -1
-            elif c == '(':
-                stack.append(result)
-                stack.append(sign)
-                result = 0
-                sign = 1
-            elif c == ')':
-                result += sign * num
-                result *= stack.pop()
-                result += stack.pop()
-                num = 0
-            print("c: ", c)
-            print("stack: ", stack)
-            print("num: ", num)
-            print("result: ", result)
-            print("sign: ", sign)
-            print("=====================================")
+    def calculate(self, s):
+        def evaluate(i):
+            res, digit, sign = 0, 0, 1
 
-        return result + sign * num
+            while i < len(s):
+                if s[i].isdigit():
+                    digit = digit * 10 + int(s[i])
+                elif s[i] in '+-':
+                    res += digit * sign
+                    digit = 0
+                    sign = 1 if s[i] == '+' else -1
+                elif s[i] == '(':
+                    subres, i = evaluate(i + 1)
+                    res += sign * subres
+                elif s[i] == ')':
+                    res += digit * sign
+                    return res, i
+                i += 1
+
+            return res + digit * sign
+
+        return evaluate(0)
 
 
 class TestCalculate(unittest.TestCase):
