@@ -62,27 +62,21 @@ class TestCalculate(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
 
-    def test_example_0(self):
-        algorithm = "1 + 1"
+    def do_test(self, algorithm):
         answer = eval(algorithm)
         self.assertEqual(self.solution.calculate(algorithm), answer)
+
+    def test_example_0(self):
+        self.do_test("1 + 1")
 
     def test_example_1(self):
-        algorithm = "1864 + 1"
-        answer = eval(algorithm)
-        self.assertEqual(self.solution.calculate(algorithm), answer)
+        self.do_test("1864 + 1")
 
     def test_example_2(self):
-        algorithm = " 2-1 + 2 "
-        answer = eval(algorithm)
-        self.assertEqual(self.solution.calculate(algorithm), answer)
+        self.do_test(" 2-1 + 2 ")
 
     def test_example_3(self):
-        algorithm = "(1+(4+5+2-3)-3)+(6+8)"
-        answer = eval(algorithm)
-        self.assertEqual(self.solution.calculate(algorithm), answer)
+        self.do_test("(1+(4+5+2-3)-3)+(6+8)")
 
     def test_example_4(self):
-        algorithm = "(1-204+(4+599+2-33)-53)+(6-8)"
-        answer = eval(algorithm)
-        self.assertEqual(self.solution.calculate(algorithm), answer)
+        self.do_test("(1-204+(4+599+2-33)-53)+(6-8)")
