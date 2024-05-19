@@ -46,33 +46,64 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
+        board_copy = [row[:] for row in board]
 
-        def update_cell(j, i):
-            life_count = 0
-            for x in range(max(0, i - 1), min(len(board[0]), i + 2)):
-                for y in range(max(0, j - 1), min(len(board), j + 2)):
-                    if x == i and y == j:
-                        continue
-                    life_count += board[y][x] & 1
-            match life_count:
-                case 3:
-                    life_count = 1
-                case 2:
-                    life_count = board[j][i]
-                case _:
-                    life_count = 0
-            # print(f"visit:({j}, {i}) {board[j][i]} -> {life_count}")
-            next_i = i + 1 if i + 1 < len(board[0]) else 0
-            if next_i != 0 and next_i > i:
-                next_j = j
-            else:
-                next_j = j + 1 if j + 1 < len(board) else -1
-
-            if next_j != -1:
-                update_cell(next_j, next_i)
-            board[j][i] = life_count
-
-        update_cell(0, 0)
+        m = len(board)
+        n = len(board[0])
+        b2 = [[0 for i in range(n)] for _ in range(m)]
+        for row in range(len(board)):
+            for block in range(len(board[row])):
+                c = 0
+                if board_copy[row][block] == 1:
+                    c += 1
+                #block right
+                if block+1 < len(board[row]):
+                    if board_copy[row][block+1] == 1:
+                        c += 1
+                #block left
+                if block>0:
+                    if board_copy[row][block-1] == 1:
+                        c += 1
+                #block below
+                if row+1 < len(board):
+                    if board_copy[row+1][block] == 1:
+                        c +=1
+                #block down/right
+                if row+1 < len(board) and block+1 < len(board[row]):
+                    if board_copy[row+1][block+1] == 1:
+                        c += 1
+                #block down/left
+                if row+1 < len(board) and block > 0:
+                    if board_copy[row+1][block-1] == 1:
+                        c += 1
+                #block above
+                if row-1 >= 0:
+                    if board_copy[row-1][block] == 1:
+                        c += 1
+                #block up/right
+                if row-1 >= 0 and block+1 < len(board[row]):
+                    if board_copy[row-1][block+1] == 1:
+                        c += 1
+                #block up/left
+                if row-1 >= 0 and block > 0:
+                    if board_copy[row-1][block-1] == 1:
+                        c += 1
+                #rule 1
+                if board_copy[row][block] == 1 and c <= 2:
+                    new_block = 0
+                #rule 2
+                elif board_copy[row][block] == 1 and 3 <= c <=4:
+                    new_block = 1
+                #rule 3
+                elif board_copy[row][block] == 1 and c > 4:
+                    new_block = 0
+                #rule 4
+                elif board_copy[row][block] == 0 and c == 3:
+                    new_block = 1
+                #dead cell
+                elif board_copy[row][block] == 0:
+                    new_block = 0
+                board[row][block] = new_block
 
 
 class TestGameOfLife(unittest.TestCase):

@@ -47,32 +47,26 @@ class Solution:
         Do not return anything, modify board in-place instead.
         """
 
-        def update_cell(j, i):
-            life_count = 0
-            for x in range(max(0, i - 1), min(len(board[0]), i + 2)):
-                for y in range(max(0, j - 1), min(len(board), j + 2)):
-                    if x == i and y == j:
-                        continue
-                    life_count += board[y][x] & 1
-            match life_count:
-                case 3:
-                    life_count = 1
-                case 2:
-                    life_count = board[j][i]
-                case _:
+        def update_cells():
+            for j in range(len(board)):
+                for i in range(len(board[0])):
                     life_count = 0
-            # print(f"visit:({j}, {i}) {board[j][i]} -> {life_count}")
-            next_i = i + 1 if i + 1 < len(board[0]) else 0
-            if next_i != 0 and next_i > i:
-                next_j = j
-            else:
-                next_j = j + 1 if j + 1 < len(board) else -1
+                    for x in range(max(0, i - 1), min(len(board[0]), i + 2)):
+                        for y in range(max(0, j - 1), min(len(board), j + 2)):
+                            if x == i and y == j:
+                                continue
+                            life_count += board[y][x] & 1
+                    match life_count:
+                        case 3:
+                            yield (j, i, 1)
+                        case 2:
+                            yield (j, i, board[j][i])
+                        case _:
+                            yield (j, i, 0)
 
-            if next_j != -1:
-                update_cell(next_j, next_i)
-            board[j][i] = life_count
-
-        update_cell(0, 0)
+        updates = list(update_cells())
+        for j, i, value in updates:
+            board[j][i] = value
 
 
 class TestGameOfLife(unittest.TestCase):

@@ -42,37 +42,31 @@ class Solution:
     In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
     """
 
-    def gameOfLife(self, board: List[List[int]]) -> None:
-        """
-        Do not return anything, modify board in-place instead.
-        """
+    def gameOfLife(self,board):
+        if not board or not board[0]:
+            return
+        m, n = len(board), len(board[0])
 
-        def update_cell(j, i):
-            life_count = 0
-            for x in range(max(0, i - 1), min(len(board[0]), i + 2)):
-                for y in range(max(0, j - 1), min(len(board), j + 2)):
-                    if x == i and y == j:
-                        continue
-                    life_count += board[y][x] & 1
-            match life_count:
-                case 3:
-                    life_count = 1
-                case 2:
-                    life_count = board[j][i]
-                case _:
-                    life_count = 0
-            # print(f"visit:({j}, {i}) {board[j][i]} -> {life_count}")
-            next_i = i + 1 if i + 1 < len(board[0]) else 0
-            if next_i != 0 and next_i > i:
-                next_j = j
-            else:
-                next_j = j + 1 if j + 1 < len(board) else -1
+        for i in range(m):
+            for j in range(n):
+                lives = self.live_neighbors(board, m, n, i, j)
 
-            if next_j != -1:
-                update_cell(next_j, next_i)
-            board[j][i] = life_count
+                if board[i][j] == 1 and 2 <= lives <= 3:
+                    board[i][j] = 3  # 01 --> 11
+                if board[i][j] == 0 and lives == 3:
+                    board[i][j] = 2  # 00 --> 10
 
-        update_cell(0, 0)
+        for i in range(m):
+            for j in range(n):
+                board[i][j] >>= 1  # Get the 2nd state
+
+    def live_neighbors(self,board, m, n, i, j):
+        lives = 0
+        for x in range(max(i - 1, 0), min(i + 1, m - 1) + 1):
+            for y in range(max(j - 1, 0), min(j + 1, n - 1) + 1):
+                lives += board[x][y] & 1
+        lives -= board[i][j] & 1
+        return lives
 
 
 class TestGameOfLife(unittest.TestCase):
