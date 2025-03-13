@@ -1,4 +1,4 @@
-package _195_Find_the_Minimum_Area_to_Cover_All_Ones_I
+package Find_the_Minimum_Area_to_Cover_All_Ones_I
 
 import "slices"
 

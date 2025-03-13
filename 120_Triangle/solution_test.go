@@ -1,4 +1,4 @@
-package _20_Triangle
+package Triangle
 
 import "testing"
 

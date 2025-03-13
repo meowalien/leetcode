@@ -1,4 +1,4 @@
-package _09_Minimum_Size_Subarray_Sum
+package Minimum_Size_Subarray_Sum
 
 import (
 	"math"

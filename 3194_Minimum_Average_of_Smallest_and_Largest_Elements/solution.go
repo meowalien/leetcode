@@ -1,4 +1,4 @@
-package _194_Minimum_Average_of_Smallest_and_Largest_Elements
+package Minimum_Average_of_Smallest_and_Largest_Elements
 
 import (
 	"math"

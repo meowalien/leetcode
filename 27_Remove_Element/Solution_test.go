@@ -1,4 +1,4 @@
-package _7_Remove_Element
+package Remove_Element
 
 import "testing"
 

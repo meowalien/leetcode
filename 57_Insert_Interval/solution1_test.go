@@ -1,4 +1,4 @@
-package _7_Insert_Interval
+package Insert_Interval
 
 import (
 	"testing"

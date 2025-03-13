@@ -1,4 +1,4 @@
-package _6_Merge_Intervals
+package Merge_Intervals
 
 import "testing"
 
