@@ -27,7 +27,7 @@ Constraints:
 nums is a non-decreasing array.
 -109 <= target <= 109
 */
-func searchRange(nums []int, target int) []int {
+func searchRange1(nums []int, target int) []int {
 	left := binSearch(nums, target, true)
 	right := binSearch(nums, target, false)
 	return []int{left, right}

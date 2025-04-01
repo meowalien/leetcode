@@ -28,12 +28,12 @@ nums is a non-decreasing array.
 -109 <= target <= 109
 */
 func searchRange(nums []int, target int) []int {
-	left := binSearch(nums, target, true)
-	right := binSearch(nums, target, false)
-	return []int{left, right}
+	first := findFirst(nums, target)
+	last := findLast(nums, target)
+	return []int{first, last}
 }
 
-func binSearch(nums []int, target int, leftBias bool) int {
+func findFirst(nums []int, target int) int {
 	left, right := 0, len(nums)-1
 	result := -1
 
@@ -41,11 +41,26 @@ func binSearch(nums []int, target int, leftBias bool) int {
 		mid := left + (right-left)/2
 		if nums[mid] == target {
 			result = mid
-			if leftBias {
-				right = mid - 1
-			} else {
-				left = mid + 1
-			}
+			right = mid - 1 // keep searching in the left half
+		} else if nums[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+
+	return result
+}
+
+func findLast(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+	result := -1
+
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			result = mid
+			left = mid + 1 // keep searching in the right half
 		} else if nums[mid] < target {
 			left = mid + 1
 		} else {
